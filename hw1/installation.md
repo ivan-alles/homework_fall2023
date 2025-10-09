@@ -52,3 +52,18 @@ These can be resolved with:
 ```
 export MUJOCO_GL=egl
 ```
+
+
+To fix the problem with matplotlib 
+
+```
+AttributeError: _ARRAY_API not found
+```
+
+do 
+
+```
+conda activate cs285
+pip uninstall -y matplotlib numpy
+pip install "numpy<2" "matplotlib>=3.6,<3.10"
+```
