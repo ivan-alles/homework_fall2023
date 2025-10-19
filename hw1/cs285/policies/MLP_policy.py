@@ -133,7 +133,7 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
 
     def update(self, observations, actions):
         """
-        Updates/trains the policy
+        Updates/trains the policy. Called in the training loop.
 
         :param observations: observation(s) to query the policy
         :param actions: actions we want the policy to imitate
