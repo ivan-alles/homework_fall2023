@@ -16,6 +16,7 @@ class ReplayBuffer(object):
         self.rews = None # rewards
         self.next_obs = None # next obversations
         self.terminals = None # bool flags for last action
+        # TODO(ia): in Ant data there are 54K observations and next obervations, 16K actions and rewards, and 2K terminals. Why? 
 
     def __len__(self):
         if self.obs:
@@ -31,8 +32,7 @@ class ReplayBuffer(object):
 
         # convert new rollouts into their component arrays, and append them onto
         # our arrays
-        observations, actions, rewards, next_observations, terminals = (
-            convert_listofrollouts(paths, concat_rew))
+        observations, actions, rewards, next_observations, terminals = convert_listofrollouts(paths, concat_rew)
 
         if self.obs is None:
             self.obs = observations[-self.max_size:]
