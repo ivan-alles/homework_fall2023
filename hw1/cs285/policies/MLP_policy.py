@@ -125,12 +125,11 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
         :return:
             action: sampled action(s) from the policy
         """
-        y = self.mean_net(observation)
+        action_mean = self.mean_net(observation)
 
-        # TODO(ia): what should we return here? actions?
         # TODO(ia): should we add randomness here from logstd?
 
-        return y
+        return action_mean
 
     def update(self, observations, actions):
         """
@@ -142,6 +141,7 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
             dict: 'Training Loss': supervised learning loss
         """
         # TODO: update the policy and return the loss
+        # TODO(ia): where is the ground truth action?
         loss = TODO
         return {
             # You can add extra logging information here, but keep this line
