@@ -5,6 +5,7 @@ Functions to edit:
     1. run_training_loop
 """
 
+from collections import OrderedDict
 import pickle
 import os
 import time
@@ -119,7 +120,7 @@ def run_training_loop(params):
         # decide if videos should be rendered/logged at this iteration
         log_video = ((itr % params['video_log_freq'] == 0) and (params['video_log_freq'] != -1))
         # decide if metrics should be logged
-        log_metrics = (itr % params['scalar_log_freq'] == 0)
+        log_metrics = (itr % params['scalar_log_freq'] == 0) and (params['scalar_log_freq'] != -1)
 
         print("\nCollecting data to be used for training...")
         if itr == 0:
@@ -154,6 +155,8 @@ def run_training_loop(params):
         train_batch_size = params['train_batch_size']
         data_len = len(replay_buffer)
 
+        batch_i = 0
+
         for _ in range(params['num_agent_train_steps_per_iter']):
 
           # Sample some data from replay_buffer
@@ -169,6 +172,8 @@ def run_training_loop(params):
           # use the sampled data to train an agent
           train_log = actor.update(ob_batch, ac_batch)
           training_logs.append(train_log)
+          logger.log_scalar(train_log["Training Loss"].item(), "Batch loss", batch_i)
+          batch_i += 1
 
         # log/save
         print('\nBeginning logging procedure...')
@@ -188,16 +193,22 @@ def run_training_loop(params):
 
         if log_metrics:
             # save eval metrics
-            print("\nCollecting data for eval...")
-            eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
-                env, actor, params['eval_batch_size'], params['ep_len'])
+            temporary_disable_metrics = True
 
-            logs = utils.compute_metrics(paths, eval_paths)
+            if temporary_disable_metrics:
+                logs = OrderedDict()
+            else:
+                print("\nCollecting data for eval...")
+                eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
+                    env, actor, params['eval_batch_size'], params['ep_len'])
+
+                logs = utils.compute_metrics(paths, eval_paths)
+
             # compute additional metrics
             logs.update(training_logs[-1]) # Only use the last log for now
             logs["Train_EnvstepsSoFar"] = total_envsteps
             logs["TimeSinceStart"] = time.time() - start_time
-            if itr == 0:
+            if itr == 0 and "Train_AverageReturn" in logs:
                 logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
 
             # perform the logging
