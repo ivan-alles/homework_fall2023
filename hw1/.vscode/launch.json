@@ -1,7 +1,24 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "name": "Debug Problem 1 (Behavior Cloning Ant)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Ant.pkl",
+                "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Ant-v4.pkl",
+                "--env_name", "Ant-v4",
+                "--exp_name", "bc_ant",
+                "--n_iter", "1",
+                "--video_log_freq", "-1"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },        
         {
             "name": "Debug Behavior Cloning (HalfCheetah)",
             "type": "python",
@@ -37,23 +54,7 @@
             "console": "integratedTerminal",
             "justMyCode": false
         },
-        {
-            "name": "Debug Behavior Cloning (Ant)",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
-            "args": [
-                "--expert_policy_file", "${workspaceFolder}/policies/experts/Ant.pkl",
-                "--expert_data", "${workspaceFolder}/expert_data/expert_data_Ant-v4.pkl",
-                "--env_name", "Ant-v4",
-                "--exp_name", "bc_ant",
-                "--n_iter", "1",
-                "--video_log_freq", "1"
-            ],
-            "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-            "justMyCode": false
-        },
+
         {
             "name": "Debug DAgger (Ant)",
             "type": "python",
