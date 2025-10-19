@@ -1,0 +1,76 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Debug Behavior Cloning (HalfCheetah)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/policies/experts/HalfCheetah.pkl",
+                "--expert_data", "${workspaceFolder}/expert_data/expert_data_HalfCheetah-v4.pkl",
+                "--env_name", "HalfCheetah-v4",
+                "--exp_name", "bc_halfcheetah",
+                "--n_iter", "1",
+                "--video_log_freq", "1"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Debug DAgger (HalfCheetah)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/policies/experts/HalfCheetah.pkl",
+                "--expert_data", "${workspaceFolder}/expert_data/expert_data_HalfCheetah-v4.pkl",
+                "--env_name", "HalfCheetah-v4",
+                "--exp_name", "dagger_halfcheetah",
+                "--do_dagger",
+                "--n_iter", "5",
+                "--video_log_freq", "1"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Behavior Cloning (Ant)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/policies/experts/Ant.pkl",
+                "--expert_data", "${workspaceFolder}/expert_data/expert_data_Ant-v4.pkl",
+                "--env_name", "Ant-v4",
+                "--exp_name", "bc_ant",
+                "--n_iter", "1",
+                "--video_log_freq", "1"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Debug DAgger (Ant)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/policies/experts/Ant.pkl",
+                "--expert_data", "${workspaceFolder}/expert_data/expert_data_Ant-v4.pkl",
+                "--env_name", "Ant-v4",
+                "--exp_name", "dagger_ant",
+                "--do_dagger",
+                "--n_iter", "5",
+                "--video_log_freq", "1"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}

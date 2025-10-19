@@ -1,0 +1,12 @@
+mujoco
+gym
+tensorboard
+matplotlib
+ipython
+moviepy
+pyvirtualdisplay
+torch
+opencv-python
+ipdb
+swig
+box2d-py
