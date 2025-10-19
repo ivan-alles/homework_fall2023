@@ -109,6 +109,7 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
             itertools.chain([self.logstd], self.mean_net.parameters()),
             self.learning_rate
         )
+        self.criterion = nn.MSELoss()
 
     def save(self, filepath):
         """
@@ -124,12 +125,12 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
         :return:
             action: sampled action(s) from the policy
         """
-        # TODO: implement the forward pass of the network.
-        # You can return anything you want, but you should be able to differentiate
-        # through it. For example, you can return a torch.FloatTensor. You can also
-        # return more flexible objects, such as a
-        # `torch.distributions.Distribution` object. It's up to you!
-        raise NotImplementedError
+        y = self.mean_net(observation)
+
+        # TODO(ia): what should we return here? actions?
+        # TODO(ia): should we add randomness here from logstd?
+
+        return y
 
     def update(self, observations, actions):
         """
