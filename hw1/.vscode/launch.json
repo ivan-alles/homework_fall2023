@@ -8,8 +8,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
             "args": [
-                "--expert_policy_file", "${workspaceFolder}/policies/experts/HalfCheetah.pkl",
-                "--expert_data", "${workspaceFolder}/expert_data/expert_data_HalfCheetah-v4.pkl",
+                "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/HalfCheetah.pkl",
+                "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_HalfCheetah-v4.pkl",
                 "--env_name", "HalfCheetah-v4",
                 "--exp_name", "bc_halfcheetah",
                 "--n_iter", "1",
