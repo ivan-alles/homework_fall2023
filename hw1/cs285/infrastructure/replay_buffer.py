@@ -11,11 +11,11 @@ class ReplayBuffer(object):
         self.paths = []
 
         # store (concatenated) component arrays from each rollout
-        self.obs = None
-        self.acs = None
-        self.rews = None
-        self.next_obs = None
-        self.terminals = None
+        self.obs = None # obvservations
+        self.acs = None # actions
+        self.rews = None # rewards
+        self.next_obs = None # next obversations
+        self.terminals = None # bool flags for last action
 
     def __len__(self):
         if self.obs:
