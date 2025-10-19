@@ -163,6 +163,9 @@ def run_training_loop(params):
           ob_batch = replay_buffer.obs[batch_indices]
           ac_batch = replay_buffer.acs[batch_indices]
 
+          ob_batch = ptu.from_numpy(ob_batch)
+          ac_batch = ptu.from_numpy(ac_batch)
+
           # use the sampled data to train an agent
           train_log = actor.update(ob_batch, ac_batch)
           training_logs.append(train_log)

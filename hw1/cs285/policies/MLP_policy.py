@@ -136,13 +136,15 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
         Updates/trains the policy. Called in the training loop.
 
         :param observations: observation(s) to query the policy
-        :param actions: actions we want the policy to imitate
+        :param actions: actions we want the policy to imitate (ground truth)
         :return:
             dict: 'Training Loss': supervised learning loss
         """
-        # TODO: update the policy and return the loss
-        # TODO(ia): where is the ground truth action?
-        loss = TODO
+        action_means = self.forward(observations)
+        loss = self.criterion(
+            action_means,
+            actions
+        )
         return {
             # You can add extra logging information here, but keep this line
             'Training Loss': ptu.to_numpy(loss),
