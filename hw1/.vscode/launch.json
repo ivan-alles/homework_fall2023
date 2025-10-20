@@ -13,11 +13,14 @@
                 "--env_name", "Ant-v4",
                 "--exp_name", "bc_ant",
                 "--n_iter", "1",
-                "--video_log_freq", "-1",
+                "--video_log_freq", "1",
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": false,
+            "env": {
+                "MUJOCO_GL": "egl"
+            }
         },        
         {
             "name": "Debug Behavior Cloning (HalfCheetah)",
