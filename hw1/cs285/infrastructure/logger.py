@@ -5,6 +5,40 @@ import torch
 
 from cs285.infrastructure import pytorch_util as ptu
 
+import imageio.v2 as imageio
+import numpy as np
+import os
+import imageio
+
+def save_videos_imageio(videos, save_dir="videos", fps=15, prefix="video"):
+    """
+    Save a batch of videos as .mp4 files using imageio.
+
+    Args:
+        videos (np.ndarray): shape (B, T, C, H, W), dtype=uint8
+        save_dir (str): directory where videos are saved
+        fps (int): frames per second
+        prefix (str): prefix for video filenames
+    """
+    os.makedirs(save_dir, exist_ok=True)
+    B, T, C, H, W = videos.shape
+    assert videos.dtype == np.uint8, "videos must be uint8"
+    assert C in [1, 3], f"expected 1 or 3 channels, got {C}"
+
+    for i in range(B):
+        path = os.path.join(save_dir, f"{prefix}_{i:03d}.mp4")
+
+        # Prepare frames (convert to (T, H, W, C))
+        video = videos[i].transpose(0, 2, 3, 1)  # (T, H, W, C)
+        if C == 1:
+            video = np.repeat(video, 3, axis=-1)  # grayscale → RGB
+
+        # Write video using imageio
+        imageio.mimsave(path, video, fps=fps, codec='libx264', quality=8)
+        # You can use codec='libx264', 'h264', or 'mpeg4' depending on your system
+
+    print(f"Saved {B} video(s) to: {os.path.abspath(save_dir)}")
+
 class Logger:
     def __init__(self, log_dir, n_logged_samples=10, summary_writer=None):
         self._log_dir = log_dir
@@ -49,7 +83,11 @@ class Logger:
 
         # log videos to tensorboard event file
         videos = np.stack(videos[:max_videos_to_save], 0)
-        videos = ptu.from_numpy(videos).to(torch.uint8)
+
+        # A workaround for not-working video logging in tensorboard
+        save_videos_imageio(videos, fps=fps, save_dir=self._log_dir, prefix=f"{video_title}_step{step}")
+
+        videos = ptu.from_numpy(videos).to(torch.float32) / 255.0
         self.log_video(videos, video_title, step, fps=fps)
 
     def log_figures(self, figure, name, step, phase):
