@@ -195,6 +195,8 @@ def run_training_loop(params):
                     fps=fps,
                     max_videos_to_save=MAX_NVIDEO,
                     video_title='eval_rollouts')
+                
+            logger.flush()
 
         if log_metrics:
             # save eval metrics
