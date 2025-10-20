@@ -12,6 +12,11 @@ import time
 import gym
 
 import numpy as np
+
+# Fix gym compatibility for numpy bool8
+if not hasattr(np, "bool8"):
+    np.bool8 = np.bool_
+
 import torch
 
 from cs285.infrastructure import pytorch_util as ptu
@@ -193,7 +198,7 @@ def run_training_loop(params):
 
         if log_metrics:
             # save eval metrics
-            temporary_disable_metrics = True
+            temporary_disable_metrics = False
 
             if temporary_disable_metrics:
                 logs = OrderedDict()
