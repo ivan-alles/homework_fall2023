@@ -90,7 +90,6 @@ def run_training_loop(params):
     ## AGENT
     #############
 
-    # TODO: Implement missing functions in this class.
     actor = MLPPolicySL(
         ac_dim,
         ob_dim,
