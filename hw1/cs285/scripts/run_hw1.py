@@ -195,6 +195,18 @@ def run_training_loop(params):
                     max_videos_to_save=MAX_NVIDEO,
                     video_title='eval_rollouts')
                 
+            # Save expert videos
+            eval_video_paths = utils.sample_n_trajectories(
+                env, expert_policy, MAX_NVIDEO, MAX_VIDEO_LEN, True)
+
+            # save videos
+            if eval_video_paths is not None:
+                logger.log_paths_as_videos(
+                    eval_video_paths, itr,
+                    fps=fps,
+                    max_videos_to_save=MAX_NVIDEO,
+                    video_title='exprt_rollouts')
+                
             logger.flush()
 
         if log_metrics:
