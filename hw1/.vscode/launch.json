@@ -44,7 +44,53 @@
             "env": {
                 "MUJOCO_GL": "egl"
             }
-        },                
+        },
+        {
+            "comment": "This one did not work: ValueError: XML Error: global coordinates no longer supported. To convert existing models, load and save them in MuJoCo 2.3.3 or older",
+            "name": "Debug Problem 1 (Behavior Cloning Walker2d)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Walker2d.pkl",
+                "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Walker2d-v4-v4.pkl",
+                "--env_name", "Walker2d-v4",
+                "--exp_name", "bc_walker2d",
+                "--n_iter", "1",
+                "--video_log_freq", "1",
+                "--eval_batch_size", "5000"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "MUJOCO_GL": "egl"
+            }
+        },       
+        {
+            "comment": "This one did not work: ValueError: XML Error: global coordinates no longer supported. To convert existing models, load and save them in MuJoCo 2.3.3 or older",
+            "name": "Debug Problem 1 (Behavior Cloning Hopper)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Hopper.pkl",
+                "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Hopper-v4.pkl",
+                "--env_name", "Hopper-v4",
+                "--exp_name", "bc_hopper",
+                "--n_iter", "1",
+                "--video_log_freq", "1",
+                "--eval_batch_size", "5000"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "MUJOCO_GL": "egl"
+            }
+        },                           
         {
             "name": "Debug DAgger (HalfCheetah)",
             "type": "python",
