@@ -220,6 +220,8 @@ def run_training_loop(params):
                 eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
                     env, actor, params['eval_batch_size'], params['ep_len'])
 
+                # For behavioral cloning, paths contain data (observation, actions, rewards) from the expert policy.
+                # eval_paths contain data from the learned policy.
                 logs = utils.compute_metrics(paths, eval_paths)
 
             # compute additional metrics
