@@ -22,24 +22,29 @@
             "env": {
                 "MUJOCO_GL": "egl"
             }
-        },        
+        },  
         {
-            "name": "Debug Behavior Cloning (HalfCheetah)",
+            "name": "Debug Problem 1 (Behavior Cloning HalfCheetah)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
             "args": [
                 "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/HalfCheetah.pkl",
                 "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_HalfCheetah-v4.pkl",
                 "--env_name", "HalfCheetah-v4",
                 "--exp_name", "bc_halfcheetah",
                 "--n_iter", "1",
-                "--video_log_freq", "1"
+                "--video_log_freq", "1",
+                "--eval_batch_size", "5000"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "justMyCode": false
-        },
+            "justMyCode": false,
+            "env": {
+                "MUJOCO_GL": "egl"
+            }
+        },                
         {
             "name": "Debug DAgger (HalfCheetah)",
             "type": "python",
