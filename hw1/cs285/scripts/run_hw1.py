@@ -235,6 +235,8 @@ def run_training_loop(params):
             for key, value in logs.items():
                 print('{} : {}'.format(key, value))
                 logger.log_scalar(value, key, itr)
+
+            print(f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}")
             print('Done logging...\n\n')
 
             logger.flush()
