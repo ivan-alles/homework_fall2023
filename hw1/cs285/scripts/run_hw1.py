@@ -231,10 +231,12 @@ def run_training_loop(params):
             if itr == 0 and "Train_AverageReturn" in logs:
                 logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
 
-            # perform the logging
-            for key, value in logs.items():
-                print('{} : {}'.format(key, value))
-                logger.log_scalar(value, key, itr)
+            # perform the logging, print to console and a file
+            with open(os.path.join(params['logdir'], 'log.txt'), 'a+') as log_file:
+                for key, value in logs.items():
+                    print('{} : {}'.format(key, value))
+                    log_file.write('{} : {}\n'.format(key, value))
+                    logger.log_scalar(value, key, itr)
 
             print(f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}")
             print('Done logging...\n\n')
