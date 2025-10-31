@@ -210,38 +210,40 @@ def run_training_loop(params):
             logger.flush()
 
         if log_metrics:
-            # save eval metrics
-            temporary_disable_metrics = False
-
-            if temporary_disable_metrics:
-                logs = OrderedDict()
-            else:
-                print("\nCollecting data for eval...")
-                eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
-                    env, actor, params['eval_batch_size'], params['ep_len'])
-
-                # For behavioral cloning, paths contain data (observation, actions, rewards) from the expert policy.
-                # eval_paths contain data from the learned policy.
-                logs = utils.compute_metrics(paths, eval_paths)
-
-            # compute additional metrics
-            logs.update(training_logs[-1]) # Only use the last log for now
-            logs["Train_EnvstepsSoFar"] = total_envsteps
-            logs["TimeSinceStart"] = time.time() - start_time
-            if itr == 0 and "Train_AverageReturn" in logs:
-                logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
-
-            # perform the logging, print to console and a file
             with open(os.path.join(params['logdir'], 'log.txt'), 'a+') as log_file:
-                for key, value in logs.items():
-                    print('{} : {}'.format(key, value))
-                    log_file.write('{} : {}\n'.format(key, value))
-                    logger.log_scalar(value, key, itr)
+                # save eval metrics
+                temporary_disable_metrics = False
 
-            print(f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}")
-            print('Done logging...\n\n')
+                if temporary_disable_metrics:
+                    logs = OrderedDict()
+                else:
+                    print("\nCollecting data for eval...")
+                    eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
+                        env, actor, params['eval_batch_size'], params['ep_len'])
 
-            logger.flush()
+                    # For behavioral cloning, paths contain data (observation, actions, rewards) from the expert policy.
+                    # eval_paths contain data from the learned policy.
+                    logs = utils.compute_metrics(paths, eval_paths)
+
+                # compute additional metrics
+                logs.update(training_logs[-1]) # Only use the last log for now
+                logs["Train_EnvstepsSoFar"] = total_envsteps
+                logs["TimeSinceStart"] = time.time() - start_time
+                if itr == 0 and "Train_AverageReturn" in logs:
+                    logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
+
+                # perform the logging, print to console and a file
+                    for key, value in logs.items():
+                        print('{} : {}'.format(key, value))
+                        log_file.write('{} : {}\n'.format(key, value))
+                        logger.log_scalar(value, key, itr)
+
+                logstring = f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}"
+                print(logstring)
+                print(logstring, file=log_file)
+                print('Done logging...\n\n')
+
+                logger.flush()
 
         if params['save_params']:
             print('\nSaving agent params')
