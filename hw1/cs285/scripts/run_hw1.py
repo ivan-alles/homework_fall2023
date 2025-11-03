@@ -153,7 +153,11 @@ def run_training_loop(params):
                 # TODO: relabel collected obsevations (from our policy) with labels from expert policy
                 # HINT: query the policy (using the get_action function) with paths[i]["observation"]
                 # and replace paths[i]["action"] with these expert labels
-                paths = TODO
+                for path in paths:
+                    observations = path["observation"]
+                    expert_actions = expert_policy.get_action(observations)
+                    assert path["action"].shape == expert_actions.shape
+                    path["action"] = expert_actions
 
         total_envsteps += envsteps_this_batch
         # add collected data to replay buffer
@@ -255,7 +259,7 @@ def run_training_loop(params):
             print('\nSaving agent params')
             actor.save('{}/policy_itr_{}.pt'.format(params['logdir'], itr))
 
-        logger.close()
+    logger.close()
 
 
 def main():

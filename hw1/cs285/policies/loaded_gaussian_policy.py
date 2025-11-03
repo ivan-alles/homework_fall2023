@@ -101,6 +101,11 @@ class LoadedGaussianPolicy(BasePolicy, nn.Module):
         """)
 
     def get_action(self, obs):
+        """
+        Get actions from the policy given an observation.
+        Input: obs, np array of size (N, obs_dim)
+        Output: ac, np array of size (N, action_dim)
+        """
         if len(obs.shape) > 1:
             observation = obs
         else:
