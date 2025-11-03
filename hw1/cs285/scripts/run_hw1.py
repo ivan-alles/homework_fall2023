@@ -123,9 +123,10 @@ def run_training_loop(params):
     # init vars at beginning of training
     total_envsteps = 0
     start_time = time.time()
+    total_num_batches_done = 0
 
     for itr in range(params['n_iter']):
-        print("\n\n********** Iteration %i ************"%itr)
+        print(f"\n\n********** Iteration {itr} ************")
 
         # decide if videos should be rendered/logged at this iteration
         log_video = ((itr % params['video_log_freq'] == 0) and (params['video_log_freq'] != -1))
@@ -170,8 +171,6 @@ def run_training_loop(params):
         train_batch_size = params['train_batch_size']
         data_len = len(replay_buffer)
 
-        batch_i = 0
-
         for _ in range(params['num_agent_train_steps_per_iter']):
 
           # Sample some data from replay_buffer
@@ -187,8 +186,8 @@ def run_training_loop(params):
           # use the sampled data to train an agent
           train_log = actor.update(ob_batch, ac_batch)
           training_logs.append(train_log)
-          logger.log_scalar(train_log["Training Loss"].item(), "Batch loss", batch_i)
-          batch_i += 1
+          logger.log_scalar(train_log["Training Loss"].item(), "Batch loss", total_num_batches_done)
+          total_num_batches_done += 1
 
         # log/save
         print('\nBeginning logging procedure...')
@@ -243,10 +242,10 @@ def run_training_loop(params):
                 logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
 
             # perform the logging, print to console and a file
-                for key, value in logs.items():
-                    print('{} : {}'.format(key, value))
-                    logger.text_log.write('{} : {}\n'.format(key, value))
-                    logger.log_scalar(value, key, itr)
+            for key, value in logs.items():
+                print('{} : {}'.format(key, value))
+                logger.text_log.write('{} : {}\n'.format(key, value))
+                logger.log_scalar(value, key, itr)
 
             logstring = f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}"
             print(logstring)
