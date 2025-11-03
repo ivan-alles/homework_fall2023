@@ -46,7 +46,13 @@ class Logger:
         print('logging outputs to ', log_dir)
         print('########################')
         self._n_logged_samples = n_logged_samples
+        os.makedirs(log_dir, exist_ok=True)
         self._summ_writer = SummaryWriter(log_dir, flush_secs=1, max_queue=1)
+        self.text_log = open(os.path.join(log_dir, 'log.txt'), 'a+')
+
+    def close(self):
+        self._summ_writer.close()
+        self.text_log.close()
 
     def log_scalar(self, scalar, name, step_):
         self._summ_writer.add_scalar('{}'.format(name), scalar, step_)

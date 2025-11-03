@@ -73,6 +73,12 @@ def run_training_loop(params):
 
     # Maximum length for episodes
     params['ep_len'] = params['ep_len'] or env.spec.max_episode_steps
+
+    # Print out all of the params to the text log
+    print("Experiment Parameters:")
+    for key, value in params.items():
+        print(f"{key} : {value}", file=logger.text_log)
+
     MAX_VIDEO_LEN = params['ep_len']
 
     assert isinstance(env.action_space, gym.spaces.Box), "Environment must be continuous"
@@ -137,7 +143,8 @@ def run_training_loop(params):
             # TODO: collect `params['batch_size']` transitions
             # HINT: use utils.sample_trajectories
             # TODO: implement missing parts of utils.sample_trajectory
-            paths, envsteps_this_batch = TODO
+            paths, envsteps_this_batch = utils.sample_trajectories(
+                env, actor, params['batch_size'], params['ep_len'])
 
             # relabel the collected obs with actions from a provided expert policy
             if params['do_dagger']:
@@ -210,44 +217,45 @@ def run_training_loop(params):
             logger.flush()
 
         if log_metrics:
-            with open(os.path.join(params['logdir'], 'log.txt'), 'a+') as log_file:
-                # save eval metrics
-                temporary_disable_metrics = False
+            # save eval metrics
+            temporary_disable_metrics = False
 
-                if temporary_disable_metrics:
-                    logs = OrderedDict()
-                else:
-                    print("\nCollecting data for eval...")
-                    eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
-                        env, actor, params['eval_batch_size'], params['ep_len'])
+            if temporary_disable_metrics:
+                logs = OrderedDict()
+            else:
+                print("\nCollecting data for eval...")
+                eval_paths, eval_envsteps_this_batch = utils.sample_trajectories(
+                    env, actor, params['eval_batch_size'], params['ep_len'])
 
-                    # For behavioral cloning, paths contain data (observation, actions, rewards) from the expert policy.
-                    # eval_paths contain data from the learned policy.
-                    logs = utils.compute_metrics(paths, eval_paths)
+                # For behavioral cloning, paths contain data (observation, actions, rewards) from the expert policy.
+                # eval_paths contain data from the learned policy.
+                logs = utils.compute_metrics(paths, eval_paths)
 
-                # compute additional metrics
-                logs.update(training_logs[-1]) # Only use the last log for now
-                logs["Train_EnvstepsSoFar"] = total_envsteps
-                logs["TimeSinceStart"] = time.time() - start_time
-                if itr == 0 and "Train_AverageReturn" in logs:
-                    logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
+            # compute additional metrics
+            logs.update(training_logs[-1]) # Only use the last log for now
+            logs["Train_EnvstepsSoFar"] = total_envsteps
+            logs["TimeSinceStart"] = time.time() - start_time
+            if itr == 0 and "Train_AverageReturn" in logs:
+                logs["Initial_DataCollection_AverageReturn"] = logs["Train_AverageReturn"]
 
-                # perform the logging, print to console and a file
-                    for key, value in logs.items():
-                        print('{} : {}'.format(key, value))
-                        log_file.write('{} : {}\n'.format(key, value))
-                        logger.log_scalar(value, key, itr)
+            # perform the logging, print to console and a file
+                for key, value in logs.items():
+                    print('{} : {}'.format(key, value))
+                    logger.text_log.write('{} : {}\n'.format(key, value))
+                    logger.log_scalar(value, key, itr)
 
-                logstring = f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}"
-                print(logstring)
-                print(logstring, file=log_file)
-                print('Done logging...\n\n')
+            logstring = f"Number of train (expert) paths: {len(paths)}, eval paths: {len(eval_paths)}"
+            print(logstring)
+            print(logstring, file=logger.text_log)
+            print('Done logging...\n\n')
 
-                logger.flush()
+            logger.flush()
 
         if params['save_params']:
             print('\nSaving agent params')
             actor.save('{}/policy_itr_{}.pt'.format(params['logdir'], itr))
+
+        logger.close()
 
 
 def main():
