@@ -31,7 +31,7 @@
                 "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Ant.pkl",
                 "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Ant-v4.pkl",
                 "--env_name", "Ant-v4",
-                "--exp_name", "bc_ant",
+                "--exp_name", "dagger_ant",
                 "--do_dagger",
                 "--n_iter", "5",
                 "--video_log_freq", "1",
@@ -106,43 +106,29 @@
             "env": {
                 "MUJOCO_GL": "egl"
             }
-        },                           
+        },    
         {
-            "name": "Debug DAgger (HalfCheetah)",
+            "name": "Debug Problem 1 (Dagger Hopper)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
             "args": [
-                "--expert_policy_file", "${workspaceFolder}/policies/experts/HalfCheetah.pkl",
-                "--expert_data", "${workspaceFolder}/expert_data/expert_data_HalfCheetah-v4.pkl",
-                "--env_name", "HalfCheetah-v4",
-                "--exp_name", "dagger_halfcheetah",
+                "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Hopper.pkl",
+                "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Hopper-v4.pkl",
+                "--env_name", "Hopper-v4",
+                "--exp_name", "dagger_hopper",
                 "--do_dagger",
                 "--n_iter", "5",
-                "--video_log_freq", "1"
+                "--video_log_freq", "1",
+                "--eval_batch_size", "5000"
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "justMyCode": false
-        },
+            "justMyCode": false,
+            "env": {
+                "MUJOCO_GL": "egl"
+            }
+        },                        
 
-        {
-            "name": "Debug DAgger (Ant)",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
-            "args": [
-                "--expert_policy_file", "${workspaceFolder}/policies/experts/Ant.pkl",
-                "--expert_data", "${workspaceFolder}/expert_data/expert_data_Ant-v4.pkl",
-                "--env_name", "Ant-v4",
-                "--exp_name", "dagger_ant",
-                "--do_dagger",
-                "--n_iter", "5",
-                "--video_log_freq", "1"
-            ],
-            "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-            "justMyCode": false
-        }
     ]
 }
