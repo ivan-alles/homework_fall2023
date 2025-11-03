@@ -6,7 +6,6 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
-            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
             "args": [
                 "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Ant.pkl",
                 "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Ant-v4.pkl",
@@ -24,11 +23,32 @@
             }
         },  
         {
+            "name": "Debug Problem 1 (Dagger Ant)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
+            "args": [
+                "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Ant.pkl",
+                "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Ant-v4.pkl",
+                "--env_name", "Ant-v4",
+                "--exp_name", "bc_ant",
+                "--do_dagger",
+                "--n_iter", "5",
+                "--video_log_freq", "1",
+                "--eval_batch_size", "5000"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "MUJOCO_GL": "egl"
+            }
+        },          
+        {
             "name": "Debug Problem 1 (Behavior Cloning HalfCheetah)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
-            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
             "args": [
                 "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/HalfCheetah.pkl",
                 "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_HalfCheetah-v4.pkl",
@@ -50,7 +70,6 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
-            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
             "args": [
                 "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Walker2d.pkl",
                 "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Walker2d-v4.pkl",
@@ -72,7 +91,6 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/cs285/scripts/run_hw1.py",
-            "comment": " To generate videos of the policy, remove the --video_log_freq -1 flag",
             "args": [
                 "--expert_policy_file", "${workspaceFolder}/cs285/policies/experts/Hopper.pkl",
                 "--expert_data", "${workspaceFolder}/cs285/expert_data/expert_data_Hopper-v4.pkl",
